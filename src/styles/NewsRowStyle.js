@@ -17,6 +17,7 @@ export const styles = StyleSheet.create({
 		backgroundColor: 'rgba(52, 52, 52, 0.8)',
 		color: '#FFFFFF'
 	},
+	newImage: { height: 180, flex: 1, resizeMode: 'cover' },
 	titleWithImage: {
 		position: 'absolute',
 		fontWeight: 'bold',

@@ -5,7 +5,7 @@ import NewsRow from './NewsRow';
 import { fetchNews, loadMoreNews } from '../../redux/actions/NewsActions';
 import { connect } from 'react-redux';
 import { SearchBar } from 'react-native-elements';
-
+import { styles } from '../../styles/NewsListStyle';
 /**
  * This is the main view 
  * this view will display the news list with a search input 
@@ -35,14 +35,12 @@ class NewsList extends React.Component {
 	 */
 	renderFooter = () => {
 		//this activity indicator will be displayed only when fetching data
-		return !this.props.newsData.isRefreshing ? (
-			<ActivityIndicator style={{ color: '#000', marginTop: 20 }} />
-		) : null;
+		return !this.props.newsData.isRefreshing ? <ActivityIndicator style={styles.activityIndicatorStyle} /> : null;
 	};
 
 	render() {
 		return (
-			<View style={{ flex: 1 }}>
+			<View style={styles.newsListWrapper}>
 				<SearchBar
 					placeholder="Search news..."
 					round

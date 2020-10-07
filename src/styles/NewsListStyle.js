@@ -15,5 +15,7 @@ export const styles = StyleSheet.create({
 		right: 0,
 		borderWidth: 1,
 		zIndex: 99
-	}
+	},
+	activityIndicatorStyle: { color: '#000', marginTop: 20 },
+	newsListWrapper: { flex: 1 }
 });

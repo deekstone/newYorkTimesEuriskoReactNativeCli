@@ -11,7 +11,7 @@ export default function NewsRow({ rowItem }) {
 						<SharedElement id={`itemPhoto.${rowItem._id}`}>
 							<Image
 								source={{ uri: `https://www.nytimes.com/${rowItem.multimedia[0].url}` }}
-								style={{ height: 180, flex: 1, resizeMode: 'cover' }}
+								style={styles.newImage}
 							/>
 						</SharedElement>
 

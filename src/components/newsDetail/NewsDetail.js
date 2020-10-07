@@ -25,7 +25,7 @@ export function NewsDetail(props) {
 					}
 				}}
 			>
-				<FontAwesomeIcon icon={faShare} size={20} color="#5c5c5c" style={{ marginEnd: 15, padding: 10 }} />
+				<FontAwesomeIcon icon={faShare} size={20} color="#5c5c5c" style={styles.shareIconStyle} />
 			</TouchableOpacity>
 		)
 	});
@@ -41,10 +41,7 @@ export function NewsDetail(props) {
 				<SharedElement id={`itemPhoto.${news._id}`}>
 					<Image
 						source={{ uri: `https://www.nytimes.com/${news.multimedia[0].url}` }}
-						style={{
-							height: 300,
-							resizeMode: 'cover'
-						}}
+						style={styles.newsImage}
 					/>
 				</SharedElement>
 			) : (

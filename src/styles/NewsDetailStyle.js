@@ -38,5 +38,10 @@ export const styles = StyleSheet.create({
 		marginTop: 10,
 		color: '#575757',
 		padding: 5
+	},
+	shareIconStyle: { marginEnd: 15, padding: 10 },
+	newsImage: {
+		height: 300,
+		resizeMode: 'cover'
 	}
 });
