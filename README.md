@@ -8,6 +8,10 @@ This app will get the newest news from the New York Times API
 ```bash
 npm install
 ```
+then 
+```bash
+react-native run-android --variant=release
+```
    
 ## Features 
  . Shareability  
