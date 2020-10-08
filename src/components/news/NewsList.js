@@ -3,114 +3,102 @@ import { Text, View, SafeAreaView, FlatList, RefreshControl, ActivityIndicator }
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import NewsRow from './NewsRow';
 import { fetchNews, loadMoreNews } from '../../redux/actions/NewsActions';
-import { connect } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { SearchBar } from 'react-native-elements';
 import { styles } from '../../styles/NewsListStyle';
 /**
  * This is the main view 
  * this view will display the news list with a search input 
  */
-class NewsList extends React.Component {
+function NewsList() {
 	//Creating a reference )
-	flatListRef = createRef();
+	const flatListRef = createRef();
+	const [ searchText, setSearchText ] = useState('');
+	const dispatch = useDispatch();
 
-	constructor() {
-		super();
-		//this is the initial state
-		this.state = {
-			searchText: ''
-		};
-	}
-
+	const isRefreshing = useSelector((state) => state.isRefreshing);
+	const isLoading = useSelector((state) => state.isLoading);
+	const page = useSelector((state) => state.page);
+	const data = useSelector((state) => state.data);
 	/**
 	 * when first opening the view this function will be triggered in order to fetch the news 
 	 */
-	componentDidMount() {
-		this.props.fetchNews(1);
-	}
+	useEffect(() => {
+		dispatch(fetchNews(1));
+	}, []);
 
 	/**
 	 * This is the list footer 
 	 * In caset the user scrolls to the bottom of the list we will display a small activity indicator 
 	 */
-	renderFooter = () => {
+	function renderFooter() {
 		//this activity indicator will be displayed only when fetching data
-		return !this.props.newsData.isRefreshing ? <ActivityIndicator style={styles.activityIndicatorStyle} /> : null;
-	};
+		return !isRefreshing ? <ActivityIndicator style={styles.activityIndicatorStyle} /> : null;
+	}
 
-	render() {
-		return (
-			<View style={styles.newsListWrapper}>
-				<SearchBar
-					placeholder="Search news..."
-					round
-					lightTheme
-					value={this.state.searchText}
-					onChangeText={(e) => {
-						this.setState({ searchText: e });
-					}}
-					onClear={(e) => {
-						this.props.fetchNews(1, '');
-						this.flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
-					}}
-					onSubmitEditing={() => {
-						//After pressing done on the keyboard after searching for a text
-						//return in case the text is empty
-						if (this.state.searchText.length == 0) return;
+	return (
+		<View style={styles.newsListWrapper}>
+			<SearchBar
+				placeholder="Search news..."
+				round
+				lightTheme
+				value={searchText}
+				onChangeText={(e) => {
+					setSearchText(e);
+				}}
+				onClear={(e) => {
+					dispatch(fetchNews(1, ''));
+					flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+				}}
+				onSubmitEditing={() => {
+					//After pressing done on the keyboard after searching for a text
+					//return in case the text is empty
+					if (searchText.length == 0) return;
 
-						//scroll to the to of the list before searching for new data
-						this.flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+					//scroll to the to of the list before searching for new data
+					flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
 
-						//in case the text is not empty search for news
-						this.props.fetchNews(1, this.state.searchText);
-					}}
-				/>
-				<FlatList
-					ref={this.flatListRef}
-					data={this.props.newsData.data}
-					refreshing={this.props.newsData.isRefreshing}
-					onRefresh={() => {
-						this.props.fetchNews(1);
-					}}
-					renderItem={(item) => {
-						return (
-							<TouchableOpacity
-								onPress={() => {
-									//Go to the news detail view after selecting a news
-									this.props.navigation.navigate('NewsDetail', item.item);
-								}}
-							>
-								{<NewsRow rowItem={item.item} />}
-							</TouchableOpacity>
-						);
-					}}
-					keyExtractor={(item, index) => {
-						return index.toString();
-					}}
-					onEndReached={() => {
-						/**
+					//in case the text is not empty search for news
+					dispatch(fetchNews(1, searchText));
+				}}
+			/>
+			<FlatList
+				ref={flatListRef}
+				data={data}
+				refreshing={isRefreshing}
+				onRefresh={() => {
+					dispatch(fetchNews(1));
+				}}
+				renderItem={(item) => {
+					return (
+						<TouchableOpacity
+							onPress={() => {
+								//Go to the news detail view after selecting a news
+								navigation.navigate('NewsDetail', item.item);
+							}}
+						>
+							{<NewsRow rowItem={item.item} />}
+						</TouchableOpacity>
+					);
+				}}
+				keyExtractor={(item, index) => {
+					return index.toString();
+				}}
+				onEndReached={() => {
+					/**
 						 * This function will be trigered after scrolling to the bottom of the page 
 						 * on End reached the app will fetch more news 
 						 * in order to prevent an endless loop, we wont call the api that gets more news if it is already loading 
 						 */
 
-						if (!this.props.newsData.isLoading)
-							this.props.loadMoreNews(this.props.newsData.page, this.state.searchText);
-					}}
-					onEndReachedThreshold={0.5}
-					ListFooterComponent={this.renderFooter}
-				/>
-			</View>
-		);
-	}
+					if (!isLoading) dispatch(loadMoreNews(page, searchText));
+				}}
+				onEndReachedThreshold={0.5}
+				ListFooterComponent={renderFooter()}
+			/>
+		</View>
+	);
 }
 
-//We will receive all the data dispatched in order to take actions later on in our layout
-const mapStateToProps = (p_state) => {
-	return {
-		newsData: p_state
-	};
-};
-
 //Connecting new lists  component to a Redux store.
-export default connect(mapStateToProps, { fetchNews, loadMoreNews })(NewsList);
+export default connect(null, { fetchNews, loadMoreNews })(NewsList);
