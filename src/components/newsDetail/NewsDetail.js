@@ -1,16 +1,17 @@
 import React from 'react';
-import { View, Image, Share } from 'react-native';
-import { Text } from 'react-native-elements';
-import { SharedElement } from 'react-navigation-shared-element';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {View, Image, Share} from 'react-native';
+import {Text} from 'react-native-elements';
+import {SharedElement} from 'react-navigation-shared-element';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import moment from 'moment';
-import { useNavigation } from '@react-navigation/native';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faShare } from '@fortawesome/free-solid-svg-icons';
+import {useNavigation} from '@react-navigation/native';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faShare} from '@fortawesome/free-solid-svg-icons';
+import PropTypes from 'prop-types';
 import styles from '../../styles/NewsDetailStyle';
 
-export default function NewsDetail(props) {
-  const news = props.route.params;
+export default function NewsDetail({route}) {
+  const news = route.params;
   const nav = useNavigation();
 
   nav.setOptions({
@@ -22,11 +23,16 @@ export default function NewsDetail(props) {
               message: news.web_url,
             });
           } catch (error) {
-            alert(error.message);
+            console.error(error)
           }
         }}
       >
-        <FontAwesomeIcon icon={faShare} size={20} color="#5c5c5c" style={styles.shareIconStyle} />
+        <FontAwesomeIcon
+          icon={faShare}
+          size={20}
+          color="#5c5c5c"
+          style={styles.shareIconStyle}
+        />
       </TouchableOpacity>
     ),
   });
@@ -36,12 +42,15 @@ export default function NewsDetail(props) {
       <View style={styles.headerSection}>
         <Text style={styles.headerSectionCat}>{news.section_name}</Text>
         <Text style={styles.headerSectionHeadline}>{news.headline.main}</Text>
-        <Text style={styles.headerSectionDate}>{moment(news.pub_date).format('DD-MM-YYYY hh:MM')}</Text>
+        <Text style={styles.headerSectionDate}>
+          {moment(news.pub_date).format('DD-MM-YYYY hh:MM')}
+        </Text>
       </View>
       {news.multimedia.length > 0 ? (
+        // eslint-disable-next-line no-underscore-dangle
         <SharedElement id={`itemPhoto.${news._id}`}>
           <Image
-            source={{ uri: `https://www.nytimes.com/${news.multimedia[0].url}` }}
+            source={{uri: `https://www.nytimes.com/${news.multimedia[0].url}`}}
             style={styles.newsImage}
           />
         </SharedElement>
@@ -57,3 +66,11 @@ export default function NewsDetail(props) {
     </ScrollView>
   );
 }
+
+NewsDetail.defaultProps = {
+  route: {},
+};
+
+NewsDetail.propTypes = {
+  route: PropTypes.element,
+};

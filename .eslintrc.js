@@ -15,5 +15,9 @@ module.exports = {
   plugins: ['react'],
   rules: {
     'linebreak-style': 0,
+    'object-curly-spacing': [0, 'always'],
+    'react/jsx-filename-extension': [1, {extensions: ['.js', '.jsx']}],
+    'no-underscore-dangle': [2, {allow: ['_id']}],
+    ["error", { allow: ["warn", "error"] }] 
   },
 };

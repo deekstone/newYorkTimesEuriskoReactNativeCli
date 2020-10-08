@@ -1,16 +1,18 @@
-import React, { useEffect, useState, createRef } from 'react';
-import { View, FlatList, ActivityIndicator } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { SearchBar } from 'react-native-elements';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import React, {useEffect, useState, createRef} from 'react';
+import {View, FlatList, ActivityIndicator} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {SearchBar} from 'react-native-elements';
+import {connect, useDispatch, useSelector} from 'react-redux';
+import PropTypes from 'prop-types';
 import NewsRow from './NewsRow';
-import { fetchNews, loadMoreNews } from '../../redux/actions/NewsActions';
+import {fetchNews, loadMoreNews} from '../../redux/actions/NewsActions';
 import styles from '../../styles/NewsListStyle';
+
 /**
  * This is the main view
  * this view will display the news list with a search input
  */
-function NewsList({ navigation }) {
+function NewsList({navigation}) {
   // Creating a reference )
   const flatListRef = createRef();
   const [searchText, setSearchText] = useState('');
@@ -51,7 +53,7 @@ function NewsList({ navigation }) {
         }}
         onClear={() => {
           dispatch(fetchNews(1, ''));
-          flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+          flatListRef.current.scrollToOffset({animated: true, offset: 0});
         }}
         onSubmitEditing={() => {
           // After pressing done on the keyboard after searching for a text
@@ -59,29 +61,28 @@ function NewsList({ navigation }) {
           if (searchText.length === 0) return;
 
           // scroll to the to of the list before searching for new data
-          flatListRef.current.scrollToOffset({ animated: true, offset: 0 });
+          flatListRef.current.scrollToOffset({animated: true, offset: 0});
 
           // in case the text is not empty search for news
           dispatch(fetchNews(1, searchText));
         }}
       />
       <FlatList
-        ref={flatListRef}
+        ref={flatListRef} 
         data={data}
         refreshing={isRefreshing}
         onRefresh={() => {
           dispatch(fetchNews(1));
         }}
-        renderItem={(item) => {
+        renderItem={(item) => (
           <TouchableOpacity
             onPress={() => {
               // Go to the news detail view after selecting a news
               navigation.navigate('NewsDetail', item.item);
-            }}
-          >
+            }}>
             <NewsRow rowItem={item.item} />
-          </TouchableOpacity>;
-        }}
+          </TouchableOpacity>
+        )}
         keyExtractor={(item, index) => {
           index.toString();
         }}
@@ -103,4 +104,10 @@ function NewsList({ navigation }) {
 }
 
 // Connecting new lists  component to a Redux store.
-export default connect(null, { fetchNews, loadMoreNews })(NewsList);
+export default connect(null, {fetchNews, loadMoreNews})(NewsList);
+
+NewsList.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func,
+  }).isRequired,
+};

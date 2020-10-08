@@ -1,13 +1,13 @@
 import React from 'react';
 
 import 'react-native-gesture-handler';
-import {NavigationContainer} from '@react-navigation/native';
-import {enableScreens} from 'react-native-screens';
-import {createStore, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { enableScreens } from 'react-native-screens';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import newsReducer from './src/redux/reducers/NewsReducer';
-import {StackViewsApp} from './src/nav/StackScreens';
+import StackViewsApp from './src/nav/StackScreens';
 
 enableScreens();
 
@@ -20,12 +20,12 @@ const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);
  *
  */
 const store = createStoreWithMiddleware(newsReducer);
-const App = () => (
-  <Provider store={store}>
-    <NavigationContainer>
-      <StackViewsApp />
-    </NavigationContainer>
-  </Provider>
-);
-
-export default App;
+export default function App() {
+  return (
+    <Provider store={store}>
+      <NavigationContainer>
+        <StackViewsApp />
+      </NavigationContainer>
+    </Provider>
+  );
+}

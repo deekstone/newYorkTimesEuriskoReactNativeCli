@@ -20,6 +20,7 @@
 		"axios": "^0.20.0",
 		"babel-preset-react-native": "^4.0.1",
 		"moment": "^2.27.0",
+		"prop-types": "^15.7.2",
 		"react": "16.13.1",
 		"react-native": "0.63.3",
 		"react-native-elements": "^2.3.2",
