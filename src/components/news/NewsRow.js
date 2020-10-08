@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {SharedElement} from 'react-navigation-shared-element';
 import styles from '../../styles/NewsRowStyle';
 
+// New row component
 export default function NewsRow({rowItem}) {
   return (
     <View style={styles.cardContainer}>
@@ -35,7 +36,7 @@ export default function NewsRow({rowItem}) {
 
 NewsRow.propTypes = {
   rowItem: PropTypes.shape({
-    multimedia: PropTypes.string,
+    multimedia: PropTypes.arrayOf(PropTypes.object).isRequired,
     _id: PropTypes.string,
     headline: PropTypes.shape({
       main: PropTypes.string,

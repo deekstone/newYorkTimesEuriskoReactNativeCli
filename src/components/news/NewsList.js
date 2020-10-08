@@ -68,7 +68,7 @@ function NewsList({navigation}) {
         }}
       />
       <FlatList
-        ref={flatListRef} 
+        ref={flatListRef}
         data={data}
         refreshing={isRefreshing}
         onRefresh={() => {
@@ -79,7 +79,8 @@ function NewsList({navigation}) {
             onPress={() => {
               // Go to the news detail view after selecting a news
               navigation.navigate('NewsDetail', item.item);
-            }}>
+            }}
+          >
             <NewsRow rowItem={item.item} />
           </TouchableOpacity>
         )}

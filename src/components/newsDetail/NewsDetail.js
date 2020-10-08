@@ -23,10 +23,9 @@ export default function NewsDetail({route}) {
               message: news.web_url,
             });
           } catch (error) {
-            console.error(error)
+            console.error(error);
           }
-        }}
-      >
+        }}>
         <FontAwesomeIcon
           icon={faShare}
           size={20}
@@ -67,10 +66,21 @@ export default function NewsDetail({route}) {
   );
 }
 
-NewsDetail.defaultProps = {
-  route: {},
-};
-
 NewsDetail.propTypes = {
-  route: PropTypes.element,
+  route: PropTypes.shape({
+    params: PropTypes.shape({
+      pub_date: PropTypes.string,
+      section_name: PropTypes.string,
+      multimedia: PropTypes.arrayOf(PropTypes.object).isRequired,
+      _id: PropTypes.string,
+      byline: PropTypes.shape({
+        original: PropTypes.string,
+      }),
+      headline: PropTypes.shape({
+        main: PropTypes.string,
+      }),
+      lead_paragraph: PropTypes.string,
+      abstract: PropTypes.string,
+    }),
+  }).isRequired,
 };
