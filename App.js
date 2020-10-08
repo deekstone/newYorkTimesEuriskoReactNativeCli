@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import newsReducer from './src/redux/reducers/NewsReducer';
 import { StackViewsApp } from './src/nav/StackScreens';
+
 enableScreens();
 
 const createStoreWithMiddleware = applyMiddleware(thunk)(createStore);

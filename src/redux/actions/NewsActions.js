@@ -1,6 +1,6 @@
 import { FETCHING_NEWS_REQUEST, FETCHING_NEWS_FAILURE, FETCHING_NEWS_SUCCESS, LOAD_MORE_NEWS_SUCCESS } from './Types';
 import Axios from 'axios';
-import { GLOBAL_VAR } from '../../GLOBAL_VAR';
+import { API_URL, API_TOKEN } from '@env';
 export const fetchingNewsRequest = () => ({ type: FETCHING_NEWS_REQUEST });
 
 /**
@@ -32,13 +32,11 @@ export const fetchNews = (page, query = '') => {
 		dispatch(fetchingNewsRequest());
 		try {
 			let res_1 = await Axios.get(
-				GLOBAL_VAR.API_URL +
-					`articlesearch.json?api-key=${GLOBAL_VAR.API_KEY}&sort=newest&page=${page}&q=${query}`
+				API_URL + `articlesearch.json?api-key=${API_TOKEN}&sort=newest&page=${page}&q=${query}`
 			);
 
 			let res_2 = await Axios.get(
-				GLOBAL_VAR.API_URL +
-					`articlesearch.json?api-key=${GLOBAL_VAR.API_KEY}&sort=newest&page=${page + 1}&q=${query}`
+				API_URL + `articlesearch.json?api-key=${API_TOKEN}&sort=newest&page=${page + 1}&q=${query}`
 			);
 
 			dispatch(fetchingNewsSuccess([ ...res_1.data.response.docs, ...res_2.data.response.docs ]));
@@ -69,13 +67,11 @@ export const loadMoreNews = (page, query) => {
 		dispatch(fetchingNewsRequest());
 		try {
 			let res_1 = await Axios.get(
-				GLOBAL_VAR.API_URL +
-					`articlesearch.json?api-key=${GLOBAL_VAR.API_KEY}&sort=newest&page=${page}&q=${query}`
+				API_URL + `articlesearch.json?api-key=${API_TOKEN}&sort=newest&page=${page}&q=${query}`
 			);
 			//we are increasing the number of page by 1 each time to get the next page
 			let res_2 = await Axios.get(
-				GLOBAL_VAR.API_URL +
-					`articlesearch.json?api-key=${GLOBAL_VAR.API_KEY}&sort=newest&page=${page + 1}&q=${query}`
+				API_URL + `articlesearch.json?api-key=${API_TOKEN}&sort=newest&page=${page + 1}&q=${query}`
 			);
 
 			//Here the data from the first and the second api call are being concatenated and then dispatched
