@@ -4,6 +4,7 @@ import {Image} from 'react-native';
 import NewsList from '../components/news/NewsList';
 import NewsDetail from '../components/newsDetail/NewsDetail';
 import logoImg from '../assets/nytimestimeline.jpg';
+import styles from '../styles/StackScreenStyle';
 /**
  * Render the stack views
  */
@@ -16,21 +17,10 @@ export default function StackViewsApp() {
         name="NewsList"
         component={NewsList}
         options={{
-          headerLeftContainerStyle: {
-            paddingLeft: 10,
-            flex: 1,
-            width: '100%',
-            alignItems: 'center',
-          },
+          headerLeftContainerStyle: styles.headerLeftContainer,
           headerLeft: () => (
             // App logo added in the nav bar
-            <Image
-              source={logoImg}
-              style={{
-                width: 200,
-                height: 40,
-              }}
-            />
+            <Image source={logoImg} style={styles.imgLogo} />
           ),
           headerTitle: '',
         }}
